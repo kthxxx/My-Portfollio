@@ -133,6 +133,8 @@ If `next dev` or `next build` reports `EISDIR`, `readlink`, `.next/trace`, or un
 4. Run `npm install` and start the project again.
 5. If the repository is on an external or virtual drive, move a clean copy to a normal local NTFS directory and retry.
 
+The development command uses Turbopack because the legacy webpack watcher can return false `readlink` errors for this project on the F: drive.
+
 The source currently passes TypeScript, ESLint, and a complete Next.js production build under Node.js 22.
 
 ## Content
