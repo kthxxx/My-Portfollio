@@ -37,4 +37,10 @@ export const creativeAreas = [
   { index: "004", title: "Music", note: "Worship arrangements, chord charts, and key changes.", state: "Practice archive" },
 ] as const;
 
-export const contact = { email: "keithjustinemeterio5@gmail.com", github: null, linkedin: null, resume: null } as const;
+export const contact = {
+  email: "keithjustinemeterio5@gmail.com",
+  github: "https://github.com/kthxxx",
+  linkedin: "https://www.linkedin.com/in/keith-justin-56262119b/?skipRedirect=true",
+  behance: "https://www.behance.net/keithjustin",
+  resume: "/Keith_Justin_Emeterio_Final_CV.pdf",
+} as const;

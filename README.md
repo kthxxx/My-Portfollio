@@ -78,7 +78,7 @@ Update image paths and descriptions in `data/portfolio-images.ts`:
 }
 ```
 
-The current featured hero is `resilinav.svg`. To select another image, move `featured: true` to that image's configuration. Only one image should be featured.
+The current featured hero is `public/photos/keith-hero.webp`. To select another image, move `featured: true` to that image's configuration. Only one image should be featured.
 
 ## Adjusting the animation
 

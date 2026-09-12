@@ -19,7 +19,7 @@ html.lenis,html.lenis body{height:auto}html.lenis{scroll-behavior:auto}.lenis.le
 .cinema-card-drift{position:absolute;inset:-1px;overflow:hidden;animation:cinema-drift 8s var(--ease-in-out) infinite alternate;will-change:transform}
 .cinema-card:nth-child(2n) .cinema-card-drift{animation-duration:10s;animation-direction:alternate-reverse}
 .cinema-card:nth-child(3n) .cinema-card-drift{animation-duration:12s}
-.cinema-card img,.cinema-featured img{object-fit:cover}
+.cinema-card img, .cinema-featured img{object-fit:cover;object-position:center}
 .cinema-card--interface{left:5vw;top:9vh;width:15vw;height:27vh;transform:rotate(-2deg)}
 .cinema-card--portrait{left:39vw;top:5vh;width:11vw;height:22vh;transform:rotate(1.5deg)}
 .cinema-card--code{right:6vw;top:8vh;width:21vw;height:23vh;transform:rotate(1deg)}
@@ -27,9 +27,9 @@ html.lenis,html.lenis body{height:auto}html.lenis{scroll-behavior:auto}.lenis.le
 .cinema-card--mobile{left:31vw;bottom:5vh;width:18vw;height:20vh;transform:rotate(-1.5deg)}
 .cinema-card--film{right:7vw;bottom:6vh;width:24vw;height:24vh;transform:rotate(2deg)}
 .cinema-card--photo{right:2vw;top:40vh;width:14vw;height:18vh;transform:rotate(-1deg)}
-.cinema-featured{position:absolute;inset:0;z-index:2;overflow:hidden;border:1px solid rgba(238,234,222,.18);border-radius:18px;background:#14201f;transform:scale(.3,.34);transform-origin:50% 50%;will-change:transform,border-radius}
-.cinema-featured-media{position:absolute;inset:0;transform:scale(3.333,2.941);transform-origin:50% 50%;will-change:transform}
-.cinema-crop{position:absolute;inset:-2%;will-change:transform}
+.cinema-featured{position:absolute;left:50%;top:50%;width:min(100vw,159.88svh);aspect-ratio:793/496;z-index:2;overflow:hidden;border:1px solid rgba(238,234,222,.18);border-radius:18px;background:#14201f;transform:translate(-50%,-50%) scale(.3);transform-origin:50% 50%;will-change:transform,border-radius}
+.cinema-featured-media{position:absolute;inset:0;transform-origin:50% 50%;will-change:transform}
+.cinema-crop{position:absolute;inset:0;will-change:transform}
 .cinema-overlay{position:absolute;inset:0;z-index:3;pointer-events:none;opacity:0;background:linear-gradient(180deg,rgba(2,5,4,.08) 0%,rgba(2,5,4,.18) 44%,rgba(2,4,3,.74) 100%),linear-gradient(90deg,rgba(2,4,3,.25),transparent 60%)}
 .cinema-content{position:absolute;inset:0;z-index:4;display:flex;flex-direction:column;justify-content:flex-end;padding:clamp(6rem,11vh,9rem) 2vw 4vh;pointer-events:none}
 .cinema-eyebrow{margin:0 0 clamp(1rem,2vh,1.5rem);font:600 clamp(.58rem,.7vw,.72rem)/1.2 var(--font-mono);letter-spacing:.11em;text-transform:uppercase;opacity:0}
@@ -42,9 +42,10 @@ html.lenis,html.lenis body{height:auto}html.lenis{scroll-behavior:auto}.lenis.le
 .cinema-cta span:last-child{font-size:1.1rem;transition:transform 200ms var(--ease-out)}
 .cinema-scroll-cue{position:absolute;z-index:5;left:50%;bottom:3.5vh;display:flex;flex-direction:column;align-items:center;gap:.8rem;transform:translateX(-50%);font:500 .56rem/1 var(--font-mono);letter-spacing:.14em;text-transform:uppercase;color:rgba(238,234,222,.68);will-change:transform,opacity}
 .cinema-scroll-cue i{display:block;width:1px;height:38px;background:rgba(238,234,222,.38);transform-origin:top;animation:cinema-line 2s var(--ease-in-out) infinite}
+.contact-links{flex-wrap:wrap;gap:1.5rem}
 .cinema-cta:focus-visible,.topbar a:focus-visible,.menu:focus-visible{outline:2px solid var(--acid);outline-offset:6px}
 @keyframes cinema-drift{from{transform:translate3d(-3px,-4px,0) rotate(-.25deg)}to{transform:translate3d(4px,5px,0) rotate(.35deg)}}
 @keyframes cinema-line{0%{transform:scaleY(0);transform-origin:top}45%{transform:scaleY(1);transform-origin:top}55%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
 @media(hover:hover) and (pointer:fine){.topbar nav a:hover{opacity:.72;color:inherit}.topbar nav a:hover:after{transform:scaleX(1);transform-origin:left}.cinema-cta:hover span:first-child{opacity:.72}.cinema-cta:hover span:last-child{transform:translateX(5px)}}
-@media(max-width:800px){.cinema-hero{min-height:560px}.cinema-card--portrait,.cinema-card--mobile,.cinema-card--photo{display:none}.cinema-card--interface{left:5vw;top:11vh;width:27vw;height:24vh}.cinema-card--code{right:5vw;top:10vh;width:34vw;height:19vh}.cinema-card--graphic{left:5vw;bottom:10vh;width:26vw;height:25vh}.cinema-card--film{right:4vw;bottom:9vh;width:34vw;height:21vh}.cinema-featured{transform:scale(.56,.32);border-radius:12px}.cinema-featured-media{transform:scale(1.786,3.125)}.cinema-content{padding:5.5rem 1rem 3vh}.cinema-content h1{font-size:clamp(2.7rem,13.5vw,5.3rem);line-height:.82;letter-spacing:-.07em}.cinema-mask>span{white-space:nowrap}.cinema-content-bottom{grid-template-columns:1fr;gap:.5rem;margin-top:1.4rem}.cinema-content-bottom p br{display:none}.cinema-cta{justify-self:start}.cinema-scroll-cue{bottom:3vh}.topbar{opacity:0}}
-@media(prefers-reduced-motion:reduce){.topbar{opacity:1}.cinema-hero{height:100svh}.cinema-stage{display:none}.cinema-featured{transform:none;border-radius:0}.cinema-featured-media{transform:none}.cinema-overlay{opacity:1}.cinema-eyebrow,.cinema-content-bottom,.cinema-content-bottom p,.cinema-cta{opacity:1;transform:none}.cinema-mask>span{transform:none}.cinema-scroll-cue{display:none}}
+@media(max-width:800px){.cinema-hero{min-height:560px}.cinema-card--portrait,.cinema-card--mobile,.cinema-card--photo{display:none}.cinema-card--interface{left:5vw;top:11vh;width:27vw;height:24vh}.cinema-card--code{right:5vw;top:10vh;width:34vw;height:19vh}.cinema-card--graphic{left:5vw;bottom:10vh;width:26vw;height:25vh}.cinema-card--film{right:4vw;bottom:9vh;width:34vw;height:21vh}.cinema-featured{transform:translate(-50%,-50%) scale(.56);border-radius:12px}.cinema-content{padding:5.5rem 1rem 3vh}.cinema-content h1{font-size:clamp(2.7rem,13.5vw,5.3rem);line-height:.82;letter-spacing:-.07em}.cinema-mask>span{white-space:nowrap}.cinema-content-bottom{grid-template-columns:1fr;gap:.5rem;margin-top:1.4rem}.cinema-content-bottom p br{display:none}.cinema-cta{justify-self:start}.cinema-scroll-cue{bottom:3vh}.topbar{opacity:0}}
+@media(prefers-reduced-motion:reduce){.topbar{opacity:1}.cinema-hero{height:100svh}.cinema-stage{display:none}.cinema-featured{width:100vw;height:100svh;aspect-ratio:auto;opacity:1;transform:translate(-50%,-50%);border-radius:0}.cinema-featured img{object-fit:cover}.cinema-featured-media{transform:none}.cinema-overlay{opacity:1}.cinema-eyebrow,.cinema-content-bottom,.cinema-content-bottom p,.cinema-cta{opacity:1;transform:none}.cinema-mask>span{transform:none}.cinema-scroll-cue{display:none}}

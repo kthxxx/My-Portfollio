@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "dev": "node -r ./patch-fs.js ./node_modules/next/dist/bin/next dev --turbopack",
+    "build": "node -r ./patch-fs.js ./node_modules/next/dist/bin/next build",
+    "start": "node -r ./patch-fs.js ./node_modules/next/dist/bin/next start",
+    "lint": "node -r ./patch-fs.js ./node_modules/next/dist/bin/next lint"
   },
   "dependencies": {
     "@react-three/drei": "^9.114.3",

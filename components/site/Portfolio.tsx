@@ -106,7 +106,14 @@ export function Portfolio() {
 
       <section id="contact" className="contact">
         <SectionLabel index="06">CONTACT</SectionLabel><p>HAVE AN IDEA?</p><h2>LET&apos;S BUILD<br /><i>SOMETHING.</i></h2>
-        <div className="contact-links"><a data-cursor="OPEN" href={`mailto:${contact.email}`}>{contact.email} ↗</a><Link data-cursor="OPEN" href="/terminal">OPEN TERMINAL ↗</Link></div>
+        <div className="contact-links">
+          <a data-cursor="OPEN" href={`mailto:${contact.email}`}>{contact.email} ↗</a>
+          <a data-cursor="OPEN" href={contact.github} target="_blank" rel="noreferrer">GITHUB ↗</a>
+          <a data-cursor="OPEN" href={contact.linkedin} target="_blank" rel="noreferrer">LINKEDIN ↗</a>
+          <a data-cursor="OPEN" href={contact.behance} target="_blank" rel="noreferrer">BEHANCE ↗</a>
+          <a data-cursor="OPEN" href={contact.resume} download="Keith_Justin_Emeterio_Final_CV.pdf">DOWNLOAD CV ↓</a>
+          <Link data-cursor="OPEN" href="/terminal">OPEN TERMINAL ↗</Link>
+        </div>
         <footer><span>KEITH JUSTIN EMETERIO</span><span>CODE × DESIGN × MEDIA</span><span>© {new Date().getFullYear()}</span></footer>
       </section>
   </main>;

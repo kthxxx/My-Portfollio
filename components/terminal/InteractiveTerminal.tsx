@@ -13,6 +13,7 @@ import {
 const commandNames = [
   "help", "whoami", "about", "education", "projects", "creative",
   "skills", "contact", "socials", "github", "linkedin", "resume",
+  "behance",
   "clear", "history", "date", "pwd", "ls", "cat", "theme",
   "coffee", "hello", "sudo", "matrix", "vim", "exit",
 ];
@@ -24,6 +25,7 @@ function contactOutput() {
     `Email: ${contact.email}`,
     `GitHub: ${contact.github ?? "TODO: ADD GITHUB"}`,
     `LinkedIn: ${contact.linkedin ?? "TODO: ADD LINKEDIN"}`,
+    `Behance: ${contact.behance}`,
     `Resume: ${contact.resume ?? "TODO: ADD RESUME"}`,
   ].join("\n");
 }
@@ -57,7 +59,7 @@ function runCommand(raw: string, history: string[]): string {
     ).join("\n");
   }
   if (command === "skills") return files["skills.txt"];
-  if (["contact", "socials", "github", "linkedin", "resume"].includes(command)) {
+  if (["contact", "socials", "github", "linkedin", "behance", "resume"].includes(command)) {
     return contactOutput();
   }
   if (command === "history") {

@@ -20,27 +20,30 @@ function setupFeaturedCard(
   const viewportWidth = window.innerWidth;
   const viewportHeight = window.innerHeight;
   const cardWidth = viewportWidth * (mobile ? 0.56 : 0.3);
-  const cardHeight = viewportHeight * (mobile ? 0.32 : 0.34);
-  const left = viewportWidth * (mobile ? 0.22 : 0.35);
-  const top = viewportHeight * (mobile ? 0.34 : 0.33);
-  const scaleX = cardWidth / viewportWidth;
-  const scaleY = cardHeight / viewportHeight;
-  const x = left + cardWidth / 2 - viewportWidth / 2;
-  const y = top + cardHeight / 2 - viewportHeight / 2;
+  const featuredWidth = featured.offsetWidth;
+  const featuredHeight = featured.offsetHeight;
+  const scale = cardWidth / featuredWidth;
+  const finalImageScale = 0.94;
+  const finalScale = Math.max(
+    viewportWidth / (featuredWidth * finalImageScale),
+    viewportHeight / (featuredHeight * finalImageScale),
+  );
 
   gsap.set(featured, {
-    x,
-    y,
-    scaleX,
-    scaleY,
+    xPercent: -50,
+    yPercent: -50,
+    x: 0,
+    y: 0,
+    scale,
     borderRadius: mobile ? 12 : 18,
     transformOrigin: "50% 50%",
   });
   gsap.set(featuredMedia, {
-    scaleX: 1 / scaleX,
-    scaleY: 1 / scaleY,
+    scale: 1,
     transformOrigin: "50% 50%",
   });
+
+  return { finalScale };
 }
 
 export function CinematicHero() {
@@ -58,8 +61,9 @@ export function CinematicHero() {
 
     if (reducedMotion) {
       gsap.set(root.querySelectorAll<HTMLElement>("[data-collage-item]"), { display: "none" });
-      gsap.set(featured, { x: 0, y: 0, scaleX: 1, scaleY: 1, borderRadius: 0 });
-      gsap.set(featuredMedia, { scaleX: 1, scaleY: 1 });
+      gsap.set(featured, { xPercent: -50, yPercent: -50, x: 0, y: 0, scale: 1, opacity: 1, borderRadius: 0 });
+      gsap.set(featuredMedia, { scale: 1 });
+      gsap.set(root.querySelector(".cinema-crop"), { scale: 1 });
       gsap.set(root.querySelector(".cinema-overlay"), { opacity: 1 });
       gsap.set(root.querySelectorAll<HTMLElement>("[data-reveal]"), { yPercent: 0 });
       gsap.set(root.querySelectorAll<HTMLElement>("[data-hero-fade]"), { opacity: 1, y: 0 });
@@ -84,8 +88,13 @@ export function CinematicHero() {
       const buildTimeline = (mobile: boolean) => {
       const cards = gsap.utils.toArray<HTMLElement>("[data-collage-item]");
       const fadeElements = gsap.utils.toArray<HTMLElement>("[data-hero-fade]");
+      const motionStart = 0.18;
+      const motionDuration = 0.56;
+      const motionEase = "power2.inOut";
 
-      setupFeaturedCard(featured, featuredMedia, mobile);
+      const { finalScale } = setupFeaturedCard(featured, featuredMedia, mobile);
+      gsap.set(featured, { opacity: 1 });
+      gsap.set(".cinema-crop", { scale: 1 });
       gsap.set(".cinema-mask > span", { yPercent: 112 });
       gsap.set(fadeElements, { opacity: 0, y: 18 });
       gsap.set(".cinema-content-bottom", { opacity: 0 });
@@ -106,9 +115,13 @@ export function CinematicHero() {
 
       timeline
         .to(".cinema-scroll-cue", { opacity: 0, y: 14, duration: 0.1 }, 0.06)
-        .to(".cinema-stage", { scale: mobile ? 1.08 : 1.14, duration: 0.42 }, 0.12);
+        .to(".cinema-stage", {
+          scale: mobile ? 1.08 : 1.14,
+          duration: motionDuration,
+          ease: motionEase,
+        }, motionStart);
 
-      cards.forEach((card, index) => {
+      cards.forEach((card) => {
         const config = portfolioImages.find((image) => image.id === card.dataset.imageId);
         if (!config) return;
         const hiddenOnMobile = mobile && ["portrait", "mobile", "photo"].includes(config.id);
@@ -122,28 +135,26 @@ export function CinematicHero() {
           scale: config.exit.scale,
           rotation: config.exit.rotation,
           opacity: 0,
-          duration: 0.5 + config.depth * 0.035,
-        }, 0.18 + index * 0.012);
+          duration: motionDuration,
+          ease: motionEase,
+        }, motionStart);
       });
 
       timeline
         .to(featured, {
           x: 0,
           y: 0,
-          scaleX: 1,
-          scaleY: 1,
+          scale: finalScale,
           borderRadius: 0,
-          duration: 0.42,
-          ease: "power2.inOut",
-        }, 0.43)
-        .to(featuredMedia, {
-          scaleX: 1,
-          scaleY: 1,
-          duration: 0.42,
-          ease: "power2.inOut",
-        }, 0.43)
+          duration: motionDuration,
+          ease: motionEase,
+        }, motionStart)
         .to(".cinema-overlay", { opacity: 1, duration: 0.18 }, 0.7)
-        .to(".cinema-crop", { scale: 1.035, duration: 0.28, ease: "power2.out" }, 0.68)
+        .to(".cinema-crop", {
+          scale: 0.94,
+          duration: motionDuration,
+          ease: motionEase,
+        }, motionStart)
         .to(".cinema-eyebrow", { opacity: 1, y: 0, duration: 0.1, ease: "power3.out" }, 0.8)
         .to(".cinema-mask > span", {
           yPercent: 0,

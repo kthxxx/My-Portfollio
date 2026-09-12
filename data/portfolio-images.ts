@@ -43,9 +43,9 @@ export const portfolioImages: PortfolioImage[] = [
     exit: { x: "89vw", y: "-70vh", scale: 2.05, rotation: 6 },
   },
   {
-    id: "resilinav",
-    src: "/landing/resilinav.svg",
-    alt: "ResiliNav flood-resilient navigation project",
+    id: "keith-portrait",
+    src: "/photos/keith-hero.webp",
+    alt: "Portrait of Keith Justin Emeterio in a dark creative studio",
     depth: 2,
     featured: true,
     className: "cinema-card--featured",
@@ -84,4 +84,3 @@ export const portfolioImages: PortfolioImage[] = [
     exit: { x: "108vw", y: "12vh", scale: 2, rotation: 7 },
   },
 ];
-
