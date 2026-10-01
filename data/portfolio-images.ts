@@ -20,24 +20,24 @@ export interface PortfolioImage {
 export const portfolioImages: PortfolioImage[] = [
   {
     id: "interface",
-    src: "/landing/interface.svg",
-    alt: "Mobile interface design study",
+    src: "/landing/developer-workspace.jpg",
+    alt: "Developer working at a multi-monitor workspace",
     depth: 3,
     className: "cinema-card--interface",
     exit: { x: "-96vw", y: "-56vh", scale: 2.8, rotation: -7 },
   },
   {
     id: "portrait",
-    src: "/landing/portrait.svg",
-    alt: "Creative portrait placeholder",
+    src: "/landing/keith-conference.jpg",
+    alt: "Keith Justin Emeterio at a leadership conference",
     depth: 1,
     className: "cinema-card--portrait",
     exit: { x: "-23vw", y: "-112vh", scale: 1.45, rotation: 3 },
   },
   {
     id: "code",
-    src: "/landing/code.svg",
-    alt: "Software development workspace",
+    src: "/landing/manila-workspace.jpg",
+    alt: "Creative laptop workspace in Manila, Philippines",
     depth: 2,
     className: "cinema-card--code",
     exit: { x: "89vw", y: "-70vh", scale: 2.05, rotation: 6 },
@@ -53,8 +53,8 @@ export const portfolioImages: PortfolioImage[] = [
   },
   {
     id: "graphic",
-    src: "/landing/graphic.svg",
-    alt: "Graphic design poster exploration",
+    src: "/landing/photography-workspace.jpg",
+    alt: "Photography and visual editing workspace",
     depth: 4,
     className: "cinema-card--graphic",
     exit: { x: "-108vw", y: "40vh", scale: 3.25, rotation: 9 },
@@ -69,18 +69,22 @@ export const portfolioImages: PortfolioImage[] = [
   },
   {
     id: "film",
-    src: "/landing/film.svg",
-    alt: "Video editing and visual storytelling",
+    src: "/landing/keith-bass.jpg",
+    alt: "Keith Justin Emeterio performing bass guitar",
     depth: 3,
     className: "cinema-card--film",
     exit: { x: "92vw", y: "83vh", scale: 2.55, rotation: -8 },
   },
   {
     id: "photo",
-    src: "/landing/photo.svg",
-    alt: "Photography study",
+    src: "/projects/mockups/seeds-of-life-global.png",
+    alt: "Seeds of Life Global website displayed in a laptop mockup",
     depth: 2,
     className: "cinema-card--photo",
     exit: { x: "108vw", y: "12vh", scale: 2, rotation: 7 },
   },
 ];
+
+export const heroCollageImages = portfolioImages.filter(
+  (image) => !image.featured && !["interface", "code", "mobile"].includes(image.id),
+);

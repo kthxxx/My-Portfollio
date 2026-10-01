@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { projects } from "@/data/portfolio-data";
+import { ProjectGallery } from "@/components/portfolio/ProjectGallery";
+import { CaseStudyNotes } from "@/components/portfolio/CaseStudyNotes";
 
 type ProjectPageProps = {
   params: Promise<{ slug: string }>;
@@ -33,13 +35,18 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
       <div className="case-grid">
         <dl className="case-meta">
           <div><dt>TYPE</dt><dd>{project.category}</dd></div>
+          <div><dt>ROLE</dt><dd>{project.role}</dd></div>
+          <div><dt>TEAM</dt><dd>{project.team}</dd></div>
           <div><dt>STATUS</dt><dd>{project.status}</dd></div>
           <div><dt>STACK</dt><dd>{project.stack.join(" / ")}</dd></div>
-          <div><dt>LINKS</dt><dd>TODO: ADD SOURCE / LIVE URL</dd></div>
+          {project.links?.length ? <div><dt>LINKS</dt><dd className="case-links">
+            {project.links.map((link) => <a key={link.href} href={link.href} target="_blank" rel="noreferrer">{link.label} ↗</a>)}
+          </dd></div> : null}
         </dl>
-        <div className="case-copy"><h2>OVERVIEW</h2><p>{project.detail || project.description}</p></div>
+        <div className="case-copy"><h2>OVERVIEW</h2><p>{project.detail}</p></div>
       </div>
-      <div className="placeholder-media">PROJECT MEDIA PENDING<br />TODO: ADD SCREENSHOTS / PROCESS / GALLERY</div>
+      <ProjectGallery images={project.gallery} />
+      <CaseStudyNotes notes={project.caseStudy} />
     </main>
   );
 }

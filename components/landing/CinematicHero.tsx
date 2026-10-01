@@ -6,7 +6,8 @@ import { useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
-import { portfolioImages } from "@/data/portfolio-images";
+import { heroCollageImages, portfolioImages } from "@/data/portfolio-images";
+import { heroScrollDistance } from "@/data/hero-motion";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -105,7 +106,7 @@ export function CinematicHero() {
         scrollTrigger: {
           trigger: root,
           start: "top top",
-          end: mobile ? "+=250%" : "+=320%",
+          end: `+=${mobile ? heroScrollDistance.mobile : heroScrollDistance.desktop}%`,
           scrub: 0.65,
           pin: true,
           anticipatePin: 1,
@@ -124,7 +125,7 @@ export function CinematicHero() {
       cards.forEach((card) => {
         const config = portfolioImages.find((image) => image.id === card.dataset.imageId);
         if (!config) return;
-        const hiddenOnMobile = mobile && ["portrait", "mobile", "photo"].includes(config.id);
+        const hiddenOnMobile = mobile && ["portrait", "film"].includes(config.id);
         if (hiddenOnMobile) {
           gsap.set(card, { display: "none" });
           return;
@@ -204,7 +205,7 @@ export function CinematicHero() {
   return (
     <section ref={rootRef} id="index" className="cinema-hero" aria-label="Portfolio introduction">
       <div className="cinema-stage" aria-hidden="true">
-        {portfolioImages.filter((image) => !image.featured).map((image, index) => (
+        {heroCollageImages.map((image, index) => (
           <figure
             key={image.id}
             data-collage-item

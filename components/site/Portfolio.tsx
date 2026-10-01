@@ -1,10 +1,13 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
-import { AnimatePresence, motion } from "motion/react";
-import { useEffect, useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { CinematicHero } from "@/components/landing/CinematicHero";
-import { contact, creativeAreas, profile, projects, skillGroups } from "@/data/portfolio-data";
+import { ContactForm } from "@/components/portfolio/ContactForm";
+import { Tooltip } from "@/components/portfolio/Tooltip";
+import { contact, creativeArchivePreviews, graphicDesignProjects, profile, projects, skillGroups, videoProjects } from "@/data/portfolio-data";
 
 const navigation = [
   ["Index", "#index"], ["About", "#about"], ["Work", "#work"],
@@ -65,6 +68,39 @@ function Cursor() {
 }
 
 export function Portfolio() {
+  const reduceMotion = useReducedMotion();
+  const [archiveOpen, setArchiveOpen] = useState(false);
+  const [activeArchive, setActiveArchive] = useState<(typeof creativeArchivePreviews)[number]["id"]>(creativeArchivePreviews[0].id);
+  const [selectedGraphic, setSelectedGraphic] = useState<(typeof graphicDesignProjects)[number] | null>(null);
+  const archiveLauncher = useRef<HTMLButtonElement>(null);
+  const closeArchive = useCallback(() => {
+    setArchiveOpen(false);
+    window.requestAnimationFrame(() => archiveLauncher.current?.focus());
+  }, []);
+
+  useEffect(() => {
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      if (selectedGraphic) setSelectedGraphic(null);
+      else closeArchive();
+    };
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, [selectedGraphic, archiveOpen, closeArchive]);
+
+  useEffect(() => {
+    if (!archiveOpen) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = previousOverflow; };
+  }, [archiveOpen, activeArchive]);
+
+  useEffect(() => {
+    if (!archiveOpen) return;
+    const frame = window.requestAnimationFrame(() => document.getElementById(`archive-tab-${activeArchive}`)?.focus());
+    return () => window.cancelAnimationFrame(frame);
+  }, [archiveOpen]);
+
   return <main>
     <Header /><Cursor />
     <CinematicHero />
@@ -82,7 +118,13 @@ export function Portfolio() {
         <div className="section-intro"><h2>SYSTEMS<br />I&apos;VE BUILT</h2><p>Academic, mobile, and interface work—each one a record of a problem explored and a skill sharpened.</p></div>
         <div className="project-list">{projects.map((project, index) =>
           <Link data-cursor="VIEW" href={`/work/${project.slug}`} className="project-row" key={project.slug}>
-            <span>0{index + 1}</span><div><small>{project.category}</small><h3>{project.name}</h3></div><p>{project.description}</p><b>↗</b>
+            <span>0{index + 1}</span>
+            <div><small>{project.category}</small><h3>{project.name}</h3></div>
+            <p>{project.description}</p>
+            <div className="project-thumb">
+              <Image src={project.mockupImage.src} alt="" fill sizes="(max-width: 800px) 42vw, 18vw" />
+            </div>
+            <b>↗</b>
           </Link>
         )}</div>
       </section>
@@ -90,12 +132,77 @@ export function Portfolio() {
       <section id="creative" className="section creative">
         <SectionLabel index="04">CREATIVE ARCHIVE</SectionLabel>
         <div className="section-intro"><h2>THE OTHER<br /><i>HALF OF THE SYSTEM.</i></h2><p>Code builds the structure. Visual work gives it voice.</p></div>
-        <div className="archive-grid">{creativeAreas.map((area, index) =>
-          <article data-cursor="EXPLORE" key={area.index} className={`archive a${index + 1}`}>
-            <div className="archive-screen"><span>{area.index}</span><b>ASSET<br />PENDING</b><i>+</i></div><small>ARCHIVE / {area.index}</small><h3>{area.title}</h3><p>{area.note}</p><em>{area.state}</em>
-          </article>
-        )}</div>
+        <button ref={archiveLauncher} data-cursor="EXPLORE" className="archive-launch archive-launch-single" type="button" aria-haspopup="dialog" onClick={() => setArchiveOpen(true)}>
+          <span className="archive-launch-media" style={{ backgroundImage: `url("${creativeArchivePreviews[0].cover}")` }} />
+          <span className="archive-launch-copy"><small>{creativeArchivePreviews.reduce((total, archive) => total + archive.itemCount, 0).toString().padStart(2, "0")} SELECTED WORKS</small><strong>THE CREATIVE ARCHIVE</strong><em>Posters, identity studies, visual communication, and selected video work.</em><b>OPEN ARCHIVE ↗</b></span>
+        </button>
       </section>
+
+      {archiveOpen && <div className="archive-dialog" role="dialog" aria-modal="true" aria-label="Creative archive" onClick={closeArchive}>
+        <div className="archive-dialog-panel" onClick={(event) => event.stopPropagation()}>
+          <header className="archive-dialog-header">
+            <div><small>CREATIVE ARCHIVE</small><h2>{activeArchive === "graphic-design" ? "Graphic Design" : "Video & Media"}</h2></div>
+            <Tooltip label="Close archive"><button type="button" onClick={closeArchive} aria-label="Close archive">CLOSE ×</button></Tooltip>
+          </header>
+          <div className="archive-tabs" role="tablist" aria-label="Creative archive collections" onKeyDown={(event) => {
+            if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+              event.preventDefault();
+              const next = activeArchive === "graphic-design" ? "video-media" : "graphic-design";
+              setActiveArchive(next);
+              document.getElementById(`archive-tab-${next}`)?.focus();
+            }
+          }}>
+            {creativeArchivePreviews.map((archive) => <button key={archive.id} id={`archive-tab-${archive.id}`} type="button" role="tab" aria-selected={activeArchive === archive.id} aria-controls="archive-active-panel" tabIndex={activeArchive === archive.id ? 0 : -1} onClick={() => setActiveArchive(archive.id)}>
+              {archive.title}<small>{String(archive.itemCount).padStart(2, "0")}</small>
+            </button>)}
+          </div>
+          <AnimatePresence mode="wait" initial={false}>
+          {activeArchive === "graphic-design" ? <motion.div
+            className="graphic-gallery archive-tab-panel"
+            key="graphic-design"
+            initial={reduceMotion ? false : { opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={reduceMotion ? undefined : { opacity: 0, y: -8 }}
+            transition={{ duration: reduceMotion ? 0 : 0.2, ease: "easeOut" }}
+          >
+            <div id="archive-active-panel" role="tabpanel" aria-labelledby="archive-tab-graphic-design">
+            {(["School", "Conference", "Logo"] as const).map((category) => <section className="graphic-category" key={category}>
+              <div className="graphic-category-heading"><span>GRAPHIC DESIGN / {category.toUpperCase()}</span><b>{graphicDesignProjects.filter((graphic) => graphic.category === category).length} WORKS</b></div>
+              <div className="graphic-grid">{graphicDesignProjects.filter((graphic) => graphic.category === category).map((graphic) =>
+                <button data-cursor="VIEW" className="graphic-card" type="button" key={graphic.src} onClick={() => setSelectedGraphic(graphic)}>
+                  <Image src={graphic.src} alt={graphic.title} width={graphic.width} height={graphic.height} sizes="(max-width: 640px) 100vw, (max-width: 1000px) 50vw, 30vw" />
+                  <span><small>{graphic.category}</small><strong>{graphic.title}</strong></span>
+                </button>
+              )}</div>
+            </section>)}
+            </div>
+          </motion.div> : <motion.div
+            className="video-grid archive-tab-panel"
+            id="archive-active-panel"
+            role="tabpanel"
+            aria-labelledby="archive-tab-video-media"
+            key="video-media"
+            initial={reduceMotion ? false : { opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={reduceMotion ? undefined : { opacity: 0, y: -8 }}
+            transition={{ duration: reduceMotion ? 0 : 0.2, ease: "easeOut" }}
+          >{videoProjects.map((video) =>
+            <a data-cursor="WATCH" key={video.id} className="video-card" href={video.href} target="_blank" rel="noreferrer" style={{ backgroundImage: `url(https://i.ytimg.com/vi/${video.id}/hqdefault.jpg)` }}>
+              <span className="video-card-play" aria-hidden="true">▶</span>
+              <span className="video-card-copy"><small>{video.role}</small><strong>{video.title}</strong><em>Watch on YouTube ↗</em></span>
+            </a>
+          )}</motion.div>}
+          </AnimatePresence>
+        </div>
+      </div>}
+
+      {selectedGraphic && <div className="graphic-lightbox" role="dialog" aria-modal="true" aria-label={selectedGraphic.title} onClick={() => setSelectedGraphic(null)}>
+        <Tooltip label="Close artwork"><button className="graphic-lightbox-close" type="button" aria-label="Close artwork" onClick={() => setSelectedGraphic(null)}>CLOSE ×</button></Tooltip>
+        <div className="graphic-lightbox-art" onClick={(event) => event.stopPropagation()}>
+          <Image src={selectedGraphic.src} alt={selectedGraphic.title} fill sizes="90vw" priority />
+          <p>{selectedGraphic.category} / {selectedGraphic.title}</p>
+        </div>
+      </div>}
 
       <section className="section">
         <SectionLabel index="05">CAPABILITIES</SectionLabel>
@@ -106,6 +213,7 @@ export function Portfolio() {
 
       <section id="contact" className="contact">
         <SectionLabel index="06">CONTACT</SectionLabel><p>HAVE AN IDEA?</p><h2>LET&apos;S BUILD<br /><i>SOMETHING.</i></h2>
+        <ContactForm />
         <div className="contact-links">
           <a data-cursor="OPEN" href={`mailto:${contact.email}`}>{contact.email} ↗</a>
           <a data-cursor="OPEN" href={contact.github} target="_blank" rel="noreferrer">GITHUB ↗</a>

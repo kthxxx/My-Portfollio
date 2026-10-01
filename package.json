@@ -4,9 +4,13 @@
   "private": true,
   "scripts": {
     "dev": "node -r ./patch-fs.js ./node_modules/next/dist/bin/next dev --turbopack",
-    "build": "node -r ./patch-fs.js ./node_modules/next/dist/bin/next build",
+    "build": "node -r ./patch-fs.js ./node_modules/next/dist/bin/next build --turbopack",
     "start": "node -r ./patch-fs.js ./node_modules/next/dist/bin/next start",
-    "lint": "node -r ./patch-fs.js ./node_modules/next/dist/bin/next lint"
+    "lint": "node -r ./patch-fs.js ./node_modules/next/dist/bin/next lint",
+    "verify:projects": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/verify-projects.mjs",
+    "verify:graphic-design": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/verify-graphic-design.mjs",
+    "verify:hero": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/verify-hero-timeline.mjs",
+    "verify:videos": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/verify-video-projects.mjs"
   },
   "dependencies": {
     "@react-three/drei": "^9.114.3",

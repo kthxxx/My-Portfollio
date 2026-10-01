@@ -1,0 +1,44 @@
+ Bible Voyagers: Adventures Through Scripture                                                                                                                                 
+                                                                                                                                                                                   
+  ### 🌟 Project Tagline                                                                                                                                                           
+                                                                                                                                                                                   
+  │ A peaceful, offline-first 2D educational platformer and reading journal designed to help children (ages 8–10) explore Biblical stories through interactive gameplay, scripture 
+  │ comprehension, and exploration.                                                                                                                                                
+  ──────                                                                                                                                                                           
+  ### 📝 Short Summary (Ideal for Portfolio Cards / LinkedIn)                                                                                                                      
+                                                                                                                                                                                   
+  Bible Voyagers is a full-stack educational web application and 2D platformer built with React 19, TypeScript, and Phaser. It pairs gamified exploration with scripture reading   
+  and comprehension quizzes across interactive story worlds (e.g., Noah’s Ark, Joseph in Egypt, Moses and the Exodus, David the Shepherd). Built with an offline-first architecture
+  using Dexie.js (IndexedDB) and backed by Supabase Auth, the app enforces child safety and privacy by strictly separating caregiver credentials from the child’s in-game profile. 
+  ──────                                                                                                                                                                           
+  ### 🛠️ Key Technical Highlights (What Recruiters Look For)                                                                                                                       
+                                                                                                                                                                                   
+  • Hybrid React + Phaser Engine: Seamlessly embedded a Phaser 2D game engine within a modern React 19 single-page application, handling physics, custom tilemap scenery, player   
+  movement, climbing mechanics, collectibles, and mobile touch controls.                                                                                                           
+  • Offline-First & Resilient Storage: Designed an IndexedDB persistence layer using Dexie.js to track player journeys, collectibles, quest progress, and badges locally, allowing 
+  smooth gameplay with zero latency and offline support via PWA.                                                                                                                   
+  • Child Privacy & Caregiver Guardrails: Implemented a family authentication gate using Supabase Auth (email/password & Google OAuth) to keep parent credentials and session      
+  recovery isolated from child player personas (no ads, no microtransactions, zero tracking).                                                                                      
+  • Interactive Learning & Guarded Progress: Built an interactive reading journal coupled with a retryable 5-question comprehension quiz system, guarded route validation, and     
+  persistent digital badge awards in a custom Discovery Room.                                                                                                                      
+  • Rigorous Testing & Accessibility: Implemented automated end-to-end integration tests using Playwright and Vitest, adhering to strict accessibility standards verified with Axe-
+  core (mobile viewport audits down to 320px/390px, keyboard navigation, and high-contrast compliance).                                                                            
+  ──────                                                                                                                                                                           
+  ### 🚀 Tech Stack                                                                                                                                                                
+                                                                                                                                                                                   
+   Category                                                                               │ Technologies
+  ────────────────────────────────────────────────────────────────────────────────────────┼────────────────────────────────────────────────────────────────────────────────────────
+   Frontend UI                                                                            │ React 19, TypeScript, React Router, Vite, CSS Modules
+   Game Engine                                                                            │ Phaser 2D, Canvas / WebGL
+   State & Local Storage                                                                  │ Zustand, Dexie.js (IndexedDB), PWA / Workbox
+   Backend & Auth                                                                         │ Supabase (Authentication & Cloud Database), Node.js
+   Testing & Quality                                                                      │ Vitest, React Testing Library, Playwright, Axe-core (a11y)
+   Localization                                                                           │ i18next
+  ──────                                                                                                                                                                           
+  ### 💡 Suggested Case Study Bullet Points (For Your Resume)                                                                                                                      
+                                                                                                                                                                                   
+  • Engineered a 2D canvas platformer with Phaser and React 19, coordinating game events with React state to deliver interactive storytelling and responsive touch/keyboard        
+  controls.                                                                                                                                                                        
+  • Designed an offline-first state architecture utilizing Dexie.js (IndexedDB) and Zustand to ensure zero-latency local quest progress, badge retention, and session persistence. 
+  • Integrated secure caregiver authentication via Supabase, establishing privacy guardrails that decouple parent accounts from child gameplay data.                               
+  • Enforced web accessibility (WCAG) compliance across responsive breakpoints (320px–1280px) and automated browser E2E test suites with Playwright and Axe-core.                  
